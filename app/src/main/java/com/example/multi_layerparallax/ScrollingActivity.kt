@@ -1,5 +1,6 @@
 package com.example.multi_layerparallax
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.widget.NestedScrollView
@@ -20,6 +21,7 @@ class ScrollingActivity : AppCompatActivity() {
     private lateinit var top_btn_text : TextView
     private lateinit var toolbar : Toolbar
     private lateinit var real_content : NestedScrollView
+    private lateinit var like_btn : Button
 
     private var realContentInitPosition = 0f
     private var toolbar_statusbar_height = 0f
@@ -49,7 +51,7 @@ class ScrollingActivity : AppCompatActivity() {
             override fun run() {
 
                 val changedY = getViewPositionY(real_content) - realContentInitPosition
-                println("real content $changedY")
+                //println("real content $changedY")
                 //=================
                 val threshold = 450
                 if (getViewPositionY(real_content)<=threshold){
@@ -80,7 +82,7 @@ class ScrollingActivity : AppCompatActivity() {
                         top_btn.alpha = 1-(abs(changedY)-threshold1)/(threshold2-threshold1)
                         val ratio = ((threshold3.toFloat()-old_padding_icon.toFloat())/(threshold2.toFloat()-threshold1.toFloat()))  //70/200
                         val padding = old_padding_icon + (abs(changedY)-threshold1)*ratio
-                        println("padding is $padding , ratio is $ratio , ${threshold2-threshold1}")
+                        //println("padding is $padding , ratio is $ratio , ${threshold2-threshold1}")
                         top_btn.setPadding(padding.toInt(),0,0,0)
                         when {
                             abs(changedY) in 280.0..320.0 -> top_btn_after_trans.alpha = (abs(changedY)-280)/40
@@ -107,6 +109,10 @@ class ScrollingActivity : AppCompatActivity() {
         top_btn_text.setOnClickListener { Toast.makeText(applicationContext,"favoris clicked",Toast.LENGTH_SHORT).show() }
         top_btn_after_trans.setOnClickListener { Toast.makeText(applicationContext,"favoris clicked",Toast.LENGTH_SHORT).show() }
 
+        like_btn.setOnClickListener {
+            val intent = Intent(applicationContext,CallHTTPrequest::class.java)
+            startActivity(intent)
+        }
 
 
     }
@@ -122,6 +128,7 @@ class ScrollingActivity : AppCompatActivity() {
         toolbar = findViewById(R.id.toolbar)
         top_btn = findViewById(R.id.top_btn)
         top_btn_after_trans = findViewById(R.id.top_btn_after_trans)
+        like_btn = findViewById(R.id.like_btn)
         top_title = findViewById(R.id.top_title)
         top_btn_text = findViewById(R.id.top_btn_text)
         addStatusBarHeight(top_title)

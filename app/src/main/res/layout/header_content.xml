@@ -13,7 +13,8 @@
         android:orientation="horizontal">
                 <ImageView android:layout_width="150dp" android:layout_height="140dp"
                            android:src="@drawable/greenbookposter"
-                           android:layout_marginLeft="30dp"
+                           android:layout_marginStart="30dp"
+                           android:contentDescription="@string/poster"
                            android:layout_gravity="center"/>
                 <LinearLayout android:layout_width="match_parent"
                               android:layout_height="wrap_content"
@@ -22,28 +23,28 @@
                         <TextView android:layout_width="match_parent"
                                   android:layout_height="wrap_content"
 
-                        android:text="Green Book: on the road of south"
+                        android:text="@string/green_book_on_the_road_of_south"
                         android:textColor="#fff"
                         android:textStyle="bold"
-                        android:textSize="28dp"/>
+                        android:textSize="28sp"/>
                         <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
                                   android:textColor="#fff"
-                        android:text="Drame (2h30)"/>
+                        android:text="@string/drame_2h30"/>
 
                         <LinearLayout android:layout_width="match_parent"
                                       android:layout_height="wrap_content"
                                       android:orientation="horizontal"
                         android:layout_marginTop="10dp">
                                 <Button android:layout_width="50dp" android:layout_height="30dp"
-                                android:text="like"
-
+                                android:text="@string/like"
+                                        android:id="@+id/like_btn"
                                         android:textColor="#fff"
                                         android:background="#455a64"
                                 android:textAllCaps="false"/>
 
                                 <Button android:layout_width="100dp" android:layout_height="30dp"
-                                        android:text="votre avis..."
-                                        android:layout_marginLeft="20dp"
+                                        android:text="@string/votre_avis"
+                                        android:layout_marginStart="20dp"
                                         android:textColor="#fff"
                                         android:background="#455a64"
                                         android:textAllCaps="false"/>

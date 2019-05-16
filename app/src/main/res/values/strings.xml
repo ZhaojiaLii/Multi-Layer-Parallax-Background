@@ -90,4 +90,12 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_settings">Settings</string>
+    <string name="search_something">search something</string>
+    <string name="get_result">get result</string>
+    <string name="result_shows_here">result shows here</string>
+    <string name="poster">poster</string>
+    <string name="green_book_on_the_road_of_south">Green Book: on the road of south</string>
+    <string name="drame_2h30">Drame (2h30)</string>
+    <string name="like">like</string>
+    <string name="votre_avis">votre avis...</string>
 </resources>
