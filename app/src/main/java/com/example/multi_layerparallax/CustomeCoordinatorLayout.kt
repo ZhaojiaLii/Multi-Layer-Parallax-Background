@@ -83,12 +83,6 @@ open class CustomeCoordinatorLayout @JvmOverloads constructor(
         return super.onTouchEvent(ev)
     }
 
-    fun moveContent(){
-
-        val temp = getViewPositionY(realcontent) - getViewPositionY(content)
-        val changedY = getViewPositionY(realcontent) - realContentInitPosition
-        val ratio = 0.5f
-    }
 
     fun getViewPositionY(view: View):Int{
         val position = IntArray(2)

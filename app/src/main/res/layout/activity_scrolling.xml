@@ -53,11 +53,45 @@
 
     </com.example.multi_layerparallax.CustomeCoordinatorLayout>
     <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-              android:text="Green Book: on the road of south"
-              android:alpha="0"
+              android:text="Green Book"
+              android:alpha="1"
               android:id="@+id/top_title"
               android:gravity="center"
               android:layout_marginTop="10dp"
               android:textColor="#fff"
               android:textSize="20dp"/>
+    <FrameLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  >
+        <Button android:layout_width="120dp"
+                android:layout_height="30dp"
+                android:id="@+id/top_btn"
+                android:layout_gravity="right"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="8dp"
+                android:drawableLeft="@drawable/favblack"
+                android:paddingLeft="10dp"
+                android:background="@drawable/round_button"/>
+
+        <TextView android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:text="Favoris"
+                  android:textSize="16dp"
+                  android:id="@+id/top_btn_text"
+                  android:elevation="10dp"
+                  android:textStyle="bold"
+                  android:gravity="right"
+                  android:paddingTop="12dp"
+                  android:paddingRight="25dp"
+                  />
+        <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:src="@drawable/favwhite"
+                     android:layout_gravity="right"
+                     android:layout_marginTop="7dp"
+                     android:elevation="20dp"
+
+                     android:layout_marginRight="15dp"
+                     android:id="@+id/top_btn_after_trans"
+        android:background="#00000000"/>
+    </FrameLayout>
 </FrameLayout>
