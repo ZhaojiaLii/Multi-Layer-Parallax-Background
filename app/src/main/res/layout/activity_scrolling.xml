@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
         tools:context=".ScrollingActivity">
-    <com.example.multi_layerparallax.CustomeCoordinatorLayout
+    <com.example.multi_layerparallax.CustomeLayouts.CustomeCoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
@@ -51,7 +51,7 @@
         <include layout="@layout/content_scrolling"/>
 
 
-    </com.example.multi_layerparallax.CustomeCoordinatorLayout>
+    </com.example.multi_layerparallax.CustomeLayouts.CustomeCoordinatorLayout>
     <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
               android:text="Green Book"
               android:alpha="1"

@@ -1,4 +1,4 @@
-package com.example.multi_layerparallax
+package com.example.multi_layerparallax.CustomeLayouts
 
 import android.content.Context
 import android.support.v4.widget.NestedScrollView

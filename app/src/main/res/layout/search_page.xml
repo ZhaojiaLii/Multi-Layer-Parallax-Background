@@ -27,4 +27,31 @@
               android:id="@+id/show_result"
     android:layout_marginTop="30dp"
     android:gravity="center"/>
+
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:text="non rxjava search"
+    android:gravity="center"
+              android:textSize="30sp"
+              android:layout_marginTop="20dp"
+    />
+
+    <EditText android:layout_width="match_parent" android:layout_height="wrap_content"
+              android:layout_marginLeft="50dp"
+              android:inputType="text"
+              android:autofillHints="search"
+              android:id="@+id/edit_text_2"
+              android:layout_marginRight="50dp" tools:ignore="UnusedAttribute"/>
+
+    <Button android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="@string/get_result"
+            android:id="@+id/get_result_2"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:textAllCaps="false"/>
+
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+              android:text="@string/result_shows_here"
+              android:id="@+id/show_result_2"
+              android:layout_marginTop="30dp"
+              android:gravity="center"/>
 </LinearLayout>

@@ -1,4 +1,4 @@
-package com.example.multi_layerparallax
+package com.example.multi_layerparallax.CustomeLayouts
 
 import android.content.Context
 import android.support.design.widget.CoordinatorLayout
@@ -53,7 +53,7 @@ open class CustomeCoordinatorLayout @JvmOverloads constructor(
             }
             MotionEvent.ACTION_MOVE -> {
                 isDragging = true
-                val draggedX = ev.x - initX
+                //val draggedX = ev.x - initX
                 val draggedY = ev.y - initY
 
                 if (draggedY < 0){
@@ -70,7 +70,7 @@ open class CustomeCoordinatorLayout @JvmOverloads constructor(
         when(ev!!.action){
             MotionEvent.ACTION_DOWN -> {}
             MotionEvent.ACTION_MOVE -> {
-                val draggedX = ev.x - initX
+                //val draggedX = ev.x - initX
                 val draggedY = ev.y - initY
                 printMessage("$draggedY")
                 printMessage("content x: ${getViewPositionX(content)}, y: ${getViewPositionY(content)}")
