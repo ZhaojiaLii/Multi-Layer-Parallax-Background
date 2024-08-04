@@ -1,21 +1,22 @@
 # Multi-Layer-Parallax-Background
-## 前言
-因为公司在做电影院线的手机应用，有一个需求是做如图的这种多层视差头部背景(multi-layer parallax background)，原生且不使用第三方库。所以首先想到的就是直接使用谷歌官方的CoordinatorLayout + AppbarLayout + CollapsingLayout来实现最基础的视差背景效果。
+## first off all
+Because the company is making mobile applications for movie theaters, there is a need to make the multi-layer parallax background shown in the figure, which is native and does not use third-party libraries. So the first thing that comes to mind is to directly use Google's official CoordinatorLayout + AppbarLayout + CollapsingLayout to achieve the most basic parallax background effect.
 
-平台：Android Studio, 语言：Kotlin
 
-最终效果如图，经反复测试流畅无问题（如果后续测试有问题还会更新）。
-![demo演示](https://user-gold-cdn.xitu.io/2019/5/15/16abc122a1127d62?w=320&h=564&f=gif&s=5220537)
-## 想法
-1. 首先使用谷歌官方的CoordinatorLayout + AppbarLayout + CollapsingLayout布局来实现一个基本的带折叠效果的布局，可以自定义背景图片的大小和布局方式，想实现parallax只要添加“parallax” 属性就可以轻松实现。
+Platform：Android Studio, Language：Kotlin
 
-2. 然后就是如何添加另外多出来的这一层背景布局并给它不一样的移动速度，让我们看起来是有三层（背景+背景层内容+下方具体内容）layout带有三个不同的移动速度，造成多层视差效果。
-3. 背景层添加内容很容易，只要新建一个新的LinearLayout,构建好内容的布局，在AppbarLayout中include进来就可以了。因为这一部分的源码本质实际上是extend了一个FrameLayout，所以我们可以将多层内容重叠摆放在头部位置。然后在MainActivity中获取内容的id，这一步算完成了。
-4. 下面是最重要的一步，如何让这一部分的layout有不一样的上划速度，并且在惯性滑动过程中，也可以随时监测底部位置并更改自己本身的位置。
+## Ideas
+1. First, use Google's official CoordinatorLayout + AppbarLayout + CollapsingLayout layout to achieve a basic collapsible layout. You can customize the size and layout of the background image. To achieve parallax, simply add the "parallax" attribute. 
 
-    4.1.所有的触摸事件都绕不开三个大佬，`dispatchTouchEvent()`,`InterceptedTouchEvent()` 和 `onTouchEvent()`。所以果断重写CoordinatorLayout, 重写 `InterceptedTouchEvent()` 和 `onTouchEvent()`，`dispatchTouchEvent()` 暂时不用管他。我们在`InterceptedTouchEvent()`中截获手指在屏幕上的动作，然后根据我们的要求来分发事件。如果检测到手指是向上划的，就`return true`把事件传递给`onTouchEvent()`去处理。
+2. Then it is about how to add this additional layer of background layout and give it a different moving speed, so that it seems to us that there are three layers (background + background layer content + specific content below) layouts with three different moving speeds, creating a multi-layer parallax effect.
+   
+3. Adding content to the background layer is easy. Just create a new LinearLayout, construct the layout of the content, and include it in the AppbarLayout. Because the essence of the source code of this part actually extends a FrameLayout, we can overlap multiple layers of content at the header position. Then obtain the ID of the content in the MainActivity, and this step is completed.
+
+4. The following is the most important step. How to make the layout of this part have different upward sliding speeds and be able to monitor the bottom position at any time during the inertial sliding process and change its own position.
+
+    4.1. Rewrite CoordinatorLayout, rewrite `InterceptedTouchEvent()` and `onTouchEvent()`, and don't worry about `dispatchTouchEvent()` for now. We intercept the finger actions on the screen in `InterceptedTouchEvent()`, and then distribute the events according to our requirements. If it is detected that the finger is swiping upwards, `return true` to pass the event to `onTouchEvent()` for processing.
     
-    4.2 在新的CoordinatorLayout中，还要写一个open function来使Acticity可以将头部背景的图片传递过来，只有这样我们才能正常在新建的layout中处理图片位置和获取相关信息。这一点很重要，否则我们没法在这个文件里找到背景图片的代码位置（没法findViewById）。
+    4.2 In the new CoordinatorLayout, an open function needs to be written to enable the Activity to pass the header background image over. Only in this way can we normally handle the image position and obtain relevant information in the newly created layout. This is very important; otherwise, we cannot find the code position of the background image in this file (cannot findViewById). 
     ```kotlin
     fun getContent (content : LinearLayout, header:View, realcontent : View){
         this.content = content
@@ -32,7 +33,7 @@
     }
     ```
     
-    4.3 在`onTouchEvent()`中，实时检测底部的位置变化。这就需要我们在4.2所定义的方法中将三层内容的信息全部传递过来，方便我们在layout中检测和更改。
+    4.3 In `onTouchEvent()`, detect the position change of the bottom in real time. This requires us to pass all the information of the three layers of content in the method defined in 4.2 to facilitate our detection and modification in the layout. 
     
     InterceptTouchEvent()
     ```kotlin
@@ -78,7 +79,7 @@
     }
     ```
     
-    4.4 因为有惯性滑动的存在，我们不能在onTouchEvent中根据手指位置的移动来改变第二层layout的位置，所以在layout的onTouchEvent中我们只观察布局原件们的位置变化，最终的动作还是要在activity中完成。在Activity中，我们用一个handler和runneble，使用postDelayed来自定义一个每1ms执行一次的检测动作，来实时监测layout中各个原件的位置变化，来进行位置调整。
+    4.4 Due to the existence of inertial sliding, we cannot change the position of the second layer layout based on the movement of the finger position in the onTouchEvent. Therefore, in the onTouchEvent of the layout, we only observe the position changes of the layout components, and the final action still needs to be completed in the activity. In the Activity, we use a handler and runnable, and use postDelayed to customize a detection action that is executed once every 1 ms to monitor the position changes of each component in the layout in real time for position adjustment. 
     ```kotlin
     val handler = Handler()
         val runnable: Runnable = object : Runnable {
@@ -103,7 +104,7 @@
         handler.postDelayed(runnable,1)
     ```
     
-    4.5 既然在Activity中要处理布局的位置变化，我们就要先获取布局的初始位置并做出相应的位置调整,由于activity中的布局初始化比layout中的布局初始化要早执行，所以我们通过一个小的延时来在Activity中获取到所需的layout的初始位置坐标。
+    4.5 Since we need to handle the position changes of the layout in the Activity, we must first obtain the initial position of the layout and make corresponding position adjustments. Due to the layout initialization in the activity being executed earlier than that in the layout, we use a small delay to obtain the initial position coordinates of the required layout in the Activity. 
     ```kotlin
     val handler1 = Handler()
         val runnable1 = Runnable {
@@ -112,7 +113,7 @@
         }
         handler1.postDelayed(runnable1,100)
     ```
-    另外，获取位置坐标的方法：(返回值即为Y轴坐标，`return position[0]`即返回x轴坐标)
+    In addition, the method for obtaining position coordinates: (The return value is the Y-axis coordinate, and `return position[0]` returns the X-axis coordinate) 
     ```kotlin
     fun getViewPositionY(view: View):Int{
         val position = IntArray(2)
@@ -120,7 +121,7 @@
         return position[1]
     }
     ```
-5. 如果在处理touchEvent的时候，发现动作意外的被父控件拦截或者捕捉不到动作了，一定要在`dispatchTouchEvent()`,`InterceptedTouchEvent()` 和 `onTouchEvent()` 中加上` parent.requestDisallowInterceptTouchEvent(true)`就OK了。还有如果发现在使用了自定义的新CoordinatorLayout之后，下部的NestedScrollView中的内容无法滑动了，再新建一个class然后像这样写一个新的NestedScrollView就行了。
+6. If, when handling the touchEvent, it is found that the action is unexpectedly intercepted by the parent control or the action cannot be captured, it is necessary to add `parent.requestDisallowInterceptTouchEvent(true)` in `dispatchTouchEvent()`, `InterceptedTouchEvent()` and `onTouchEvent()`, and it will be OK. Also, if it is found that the content in the lower NestedScrollView cannot be scrolled after using the custom new CoordinatorLayout, just create a new class and write a new NestedScrollView like this. 
 ```kotlin
 class CustomeNestedScrollView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -138,15 +139,10 @@ class CustomeNestedScrollView @JvmOverloads constructor(
 }
 ```
 
-6. 顶部标题的问题，由于没有使用behavior，所以还是在自己建立的实时检测循环里加入了改变顶部title透明度的代码，根据谷歌官方CoordinatorLayout给的出现遮罩层的位置和出现toolbar的位置，来调整title的alpha值，就OK了。代码也在4.4中有体现。
-
-## 总结
-不知道自己使用的postDelayed方法来一直不停的检测位置变化的方法是不是正确，是否会造成对软件运行流畅度的影响。如果各位有建议请提给我谢谢！
-
-传送门：[Github -- Multi-Layer-Parallax-Background](https://github.com/ZhaojiaLii/Multi-Layer-Parallax-Background)
+6. The problem of the top title. Since behavior was not used, the code for changing the transparency of the top title was added in the self-established real-time detection loop. According to the positions of the mask layer and the toolbar given by the official Google CoordinatorLayout, the alpha value of the title was adjusted, and that's it. The code is also reflected in 4.4.
 
 
 #### bug ：
-谷歌官方的CoordinatorLayout + AppbarLayout + CollapsingLayout 布局有一个bug，至今据我测试还没有修复，就是如果在调整了头部背景的高度的时候，很容易在向下滑动的时候从头部图片滑动，如果手指离开屏幕布局进入惯性滑动fling阶段，在惯性滑动没有停止之前重新滑动屏幕（非头部区域），布局会产生抖动而且无法控制。这是因为当开始从头部滑动时，该动作被头部layout处理，产生的fling也是由它产生的，我们没有办法从外部停止这个fling，如果在这个时候触摸屏幕而且触摸点在非头部背景区域，这个动作就会和之前的惯性滑动动作冲突。
+There is a bug in the official Google CoordinatorLayout + AppbarLayout + CollapsingLayout layout. As of my tests so far, it has not been fixed. That is, if the height of the header background is adjusted, it is very easy to slide from the header image when sliding downward. If the finger leaves the screen layout and enters the inertial sliding (fling) stage, and the screen is re-slid (non-header area) before the inertial sliding stops, the layout will shake and be uncontrollable. This is because when sliding starts from the header, this action is handled by the header layout, and the resulting fling is also generated by it. We have no way to stop this fling from the outside. If the screen is touched at this time and the touch point is in the non-header background area, this action will conflict with the previous inertial sliding action. I have checked the solutions and also tried to solve this problem manually, but it did not work. I used the reflection method to obtain the overScroller and flingRunnable objects in the parent's parent's parent class, and manually injected our own scroller using the `set` method in the custom layout. In this way, we can control the inertial sliding action and stop the fling using `abortAnimation()` at any time. If there are experts who have a better solution, please teach me! 
 
-查过解决方案，也尝试过手动解决这个问题但是并没有奏效。用反射的方法获取父类的父类的父类中的overScroller和flingRunnable对象，在自定义的layout中用`set`方法手动注入我们自己的scroller，这样我们就可以控制惯性滑动的动作并随时使用`abortAnimation()`停止fling。如果有大神有更好的办法请赐教！
+I have checked the solutions and also attempted to solve this problem manually, but it was ineffective. By using the reflection method to obtain the overScroller and flingRunnable objects in the parent's parent's parent class, and manually injecting our own scroller using the `set` method in the custom layout, in this way, we can control the inertial sliding action and stop the fling using `abortAnimation()` at any time. 
